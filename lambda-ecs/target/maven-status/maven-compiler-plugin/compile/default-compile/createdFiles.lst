@@ -1,0 +1,5 @@
+com\lambda\ecs\Main.class
+com\lambda\ecs\LambdaEcsIntegration.class
+com\lambda\ecs\LambdaToSqsHandler.class
+com\lambda\ecs\LambdaEcsIntegration0.class
+com\lambda\ecs\Service\SQSService.class
