@@ -29,7 +29,7 @@ public class MyECSApp {
         for (int i = 0; i < 1000000000; i++) {
             // More CPU-intensive operation (e.g., multiplying and dividing numbers)
             double result = Math.pow(i, 2) / Math.sqrt(i);
-            System.out.println("result of message " + message + " :" + result);
+            System.out.println("resource-intensive result of message " + message + " :" + result);
         }
 
         // actual processing logic
@@ -86,7 +86,7 @@ public class MyECSApp {
             ecsTask.receiveAndProcessMessages();
             try {
                 // Sleep for some time before polling again
-                Thread.sleep(1000); // Adjust the sleep time as needed
+                Thread.sleep(10000); // message polling interval: 10 seconds
             } catch (InterruptedException e) {
                 // Handle interruptions gracefully
                 Thread.currentThread().interrupt();

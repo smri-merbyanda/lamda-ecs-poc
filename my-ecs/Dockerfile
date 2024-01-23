@@ -21,4 +21,3 @@ COPY --from=build /app/target/ecs-1.0-SNAPSHOT.jar /app/ecs-1.0-SNAPSHOT.jar
 CMD ["java", "-jar", "ecs-1.0-SNAPSHOT.jar"]
 # CMD ["java", "-cp", "ecs-1.0-SNAPSHOT.jar:aws-sdk-java.jar:.", "com.example.myecs.MyECSApp"]
 # CMD ["java", "-cp", "ecs-1.0-SNAPSHOT.jar:.", "com.example.myecs.MyECSApp"]
-
