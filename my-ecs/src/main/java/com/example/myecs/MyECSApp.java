@@ -39,7 +39,7 @@ public class MyECSApp {
     public void processMessage(String message) {
         try {
             System.out.println("Processing message: " + message);
-            
+
             if (message.equals("test1") || message.equals("test3") || message.equals("test5")) {
                 System.out.println("message is equal to " + message + " sleeping for 2 mins");
                 Thread.sleep(120000); // sleep for 2 mins
@@ -48,7 +48,7 @@ public class MyECSApp {
                 intensiveCPUAlgo(message);
             }
 
-            System.out.println("done processing message -> " + message);
+            
         } catch (Exception e) {
             System.out.println("errrr" + e.getMessage());
         }
@@ -58,10 +58,15 @@ public class MyECSApp {
     public void intensiveCPUAlgo(String message) {
         // Simulate resource-intensive operation
         for (int i = 0; i < 1000000000; i++) {
-            // More CPU-intensive operation (e.g., multiplying and dividing numbers)
-            double result = Math.pow(i, 2) / Math.sqrt(i);
-            // System.out.println("resource-intensive result of message " + message + " :" +
-            // result);
+            // CPU-intensive operation (e.g., multiplying and dividing numbers)
+            double result1 = Math.pow(i, 2) / Math.sqrt(i);
+            double result2 = Math.sin(result1) * Math.cos(result1);
+            double result3 = Math.log(result2 + 1);
+
+            // Perform more complex computations based on previous results
+            double finalResult = Math.pow(result1, result2) / Math.sqrt(result3);
+
+            System.out.println("CPU-intensive result: " + finalResult +" of message "+ message);
         }
     }
 
@@ -77,26 +82,29 @@ public class MyECSApp {
 
             // Put received messages into the blocking queue
             messageQueue.addAll(receivedMessages);
-            if (receivedMessages.size() == 0) {
+            if (receivedMessages.isEmpty()) {
                 System.out.println("No messages in the SQS queue.");
+                if (receivedMessages.size() == -1) {
+                    break; // addrss sonar lint warning
+                }
             } else {
                 // System.out.println("Received messages: " + receivedMessages);
                 System.out.println("receivedMessages.size() - " + receivedMessages.size());
                 for (int i = 0; i < Math.min(receivedMessages.size(), 3); i++) {
                     executorService.submit(() -> {
                         try {
+                            counter++;
                             // Dequeue a message from the blocking queue
                             Message receivedMessage = messageQueue.take();
 
                             String messageBody = receivedMessage.getBody();
                             String receiptHandle = receivedMessage.getReceiptHandle();
-                            // System.out.println("receivedMessage -> " + receivedMessage);
                             System.out.println("executorService.submit(() -> counter " + counter);
                             System.out.println("messageBody: " + messageBody);
 
                             // Process the received message
                             processMessage(messageBody);
-
+                            System.out.println("done processing message -> " + messageBody);
                             // Delete received message from queue
                             sqs.deleteMessage(new DeleteMessageRequest(queueUrl, receiptHandle));
                             System.out.println("message " + messageBody + " deleted");
